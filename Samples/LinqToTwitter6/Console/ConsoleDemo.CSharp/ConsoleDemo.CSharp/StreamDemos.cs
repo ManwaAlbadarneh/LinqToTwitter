@@ -73,7 +73,7 @@ namespace ConsoleDemo.CSharp
             Console.WriteLine();
             Console.Write("\t Q. Return to Main menu");
         }
-
+    
         static async Task DoFilterStreamAsync(TwitterContext twitterCtx)
         {
             Console.WriteLine("\nStreamed Content: \n");
@@ -91,6 +91,10 @@ namespace ConsoleDemo.CSharp
                                                 .WithCancellation(cancelTokenSrc.Token)
                          where strm.Type == StreamingType.Filter &&
                                strm.TweetFields == TweetField.AllFieldsExceptPermissioned
+                               && strm.Expansions == ExpansionField.AllTweetFields
+                               && strm.MediaFields == MediaField.AllFieldsExceptPermissioned
+                               && strm.PlaceFields == PlaceField.AllFields
+                               && strm.UserFields == UserField.AllFields
                          select strm)
                         .StartAsync(async strm =>
                         {
@@ -118,7 +122,7 @@ namespace ConsoleDemo.CSharp
                     Console.WriteLine("Stream cancelled.");
                     retries = 0;
                 }
-                catch (TwitterQueryException tqe) when (tqe.StatusCode == HttpStatusCode.TooManyRequests)
+                catch (TwitterQueryException tqe) when (tqe.StatusCode == (HttpStatusCode)429)
                 {
                     int millisecondsToDelay = 1000 * (4 - retries);
                     retries--;
@@ -178,7 +182,7 @@ namespace ConsoleDemo.CSharp
                     Console.WriteLine("Stream cancelled.");
                     retries = 0;
                 }
-                catch (TwitterQueryException tqe) when (tqe.StatusCode == HttpStatusCode.TooManyRequests)
+                catch (TwitterQueryException tqe) when (tqe.StatusCode == (HttpStatusCode)429)
                 {
                     int millisecondsToDelay = 1000 * (4 - retries);
                     retries--;

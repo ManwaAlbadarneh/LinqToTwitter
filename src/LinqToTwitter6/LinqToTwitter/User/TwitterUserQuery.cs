@@ -113,5 +113,11 @@ namespace LinqToTwitter
         /// </summary>
         [JsonPropertyName("includes")]
         public TwitterInclude? Includes { get; init; }
+
+        /// <summary>
+        /// Metadata with count and paging details
+        /// </summary>
+        [JsonPropertyName("meta")]
+        public UserMeta? Meta { get; set; }
     }
 }

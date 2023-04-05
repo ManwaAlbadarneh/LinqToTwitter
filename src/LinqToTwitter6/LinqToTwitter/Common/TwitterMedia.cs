@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using LinqToTwitter.Common.Entities;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace LinqToTwitter.Common
 {
@@ -71,5 +73,12 @@ namespace LinqToTwitter.Common
         /// </summary>
         [JsonPropertyName("width")]
         public int Width { get; init; }
+
+        /// <summary>
+        /// Available encodings/data streams
+        /// </summary>
+        [JsonPropertyName("variants")]
+        public List<Variant>? Variants { get; init; }
+
     }
 }

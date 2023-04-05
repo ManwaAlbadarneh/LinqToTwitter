@@ -73,7 +73,9 @@ HTTP/1.1 200 OK
                         break;
                 }
 
-                stream.Write(Encoding.UTF8.GetBytes(responseHtml));
+                byte[] responseHtmlWriteBuffer = Encoding.UTF8.GetBytes(responseHtml);
+
+                stream.Write(responseHtmlWriteBuffer , 0 , responseHtmlWriteBuffer.Length);
 
                 return sb.ToString();
             }

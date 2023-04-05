@@ -89,5 +89,11 @@
         /// promoted_metrics
         /// </summary>
         public const string PromotedMetrics = "promoted_metrics";
+
+        /// <summary>
+        /// variants
+        /// </summary>
+        public const string Variants = "variants";
+
     }
 }

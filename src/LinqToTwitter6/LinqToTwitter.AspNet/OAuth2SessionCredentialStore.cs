@@ -88,7 +88,7 @@ namespace LinqToTwitter
                     session
                         .SetString(
                             "OAuth2Scopes", 
-                            string.Join(' ', value));
+                            string.Join(" ", value));
             }
         }
 

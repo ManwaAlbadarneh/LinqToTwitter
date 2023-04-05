@@ -122,7 +122,7 @@ namespace ConsoleDemo.CSharp
                        tweet.Ids == TweetID &&
                        tweet.TweetFields == TweetField.AllFieldsExceptPermissioned &&
                        tweet.Expansions == ExpansionField.AllTweetFields &&
-                       tweet.MediaFields == MediaField.AllFields.Replace(",promoted_metrics", "") &&
+                       tweet.MediaFields == $"{MediaField.Variants} , {MediaField.AllFields.Replace(",promoted_metrics", "")}" &&
                        tweet.PlaceFields == PlaceField.AllFields &&
                        tweet.PollFields == PollField.AllFields &&
                        tweet.UserFields == UserField.AllFields
@@ -223,7 +223,7 @@ namespace ConsoleDemo.CSharp
                 await
                 (from tweet in twitterCtx.Tweets
                  where tweet.Type == TweetType.ReverseChronologicalTimeline &&
-                       tweet.ID == userID
+                       tweet.ID == userID 
                  select tweet)
                 .SingleOrDefaultAsync();
 
@@ -265,7 +265,7 @@ namespace ConsoleDemo.CSharp
                 await
                 (from tweet in twitterCtx.Tweets
                  where tweet.Type == TweetType.TweetsTimeline &&
-                       tweet.ID == userID
+                       tweet.ID == userID 
                  select tweet)
                 .SingleOrDefaultAsync();
 

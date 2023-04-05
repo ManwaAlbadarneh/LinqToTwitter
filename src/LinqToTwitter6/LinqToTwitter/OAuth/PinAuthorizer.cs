@@ -63,6 +63,50 @@ namespace LinqToTwitter.OAuth
             await GetAccessTokenAsync(accessTokenParams).ConfigureAwait(false);
         }
 
+        public async Task<string> AuthorizeAsync2()
+        {
+            if (CredentialStore == null)
+                throw new NullReferenceException(
+                    "The authorization process requires a minimum of ConsumerKey and ConsumerSecret tokens. " +
+                    "You must assign the CredentialStore property (with tokens) before calling AuthorizeAsync().");
+
+            if (CredentialStore.HasAllCredentials()) return "";
+
+            if (string.IsNullOrWhiteSpace(CredentialStore.ConsumerKey) || string.IsNullOrWhiteSpace(CredentialStore.ConsumerSecret))
+                throw new ArgumentException("You must populate CredentialStore with ConsumerKey and ConsumerSecret tokens before calling AuthorizeAsync.", "CredentialStore");
+
+            if (GoToTwitterAuthorization == null)
+                throw new InvalidOperationException("You must provide an Action<string> delegate/lambda for GoToTwitterAuthorization.");
+
+            if (GetPin == null)
+                throw new InvalidOperationException("You must provide an Func<string> delegate/lambda for GetPin.");
+
+            await GetRequestTokenAsync("oob").ConfigureAwait(false);
+
+            string authUrl = PrepareAuthorizeUrl(ForceLogin);
+
+            return authUrl;
+        }
+
+        public async Task AuthorizeGetAccessTokenAsyncc(string authUrl)
+        {
+            if (GoToTwitterAuthorization == null)
+                throw new InvalidOperationException("You must provide an Action<string> delegate/lambda for GoToTwitterAuthorization.");
+
+            if (GetPin == null)
+                throw new InvalidOperationException("You must provide an Func<string> delegate/lambda for GetPin.");
+
+            GoToTwitterAuthorization(authUrl);
+
+            string verifier = GetPin();
+
+            var accessTokenParams = new Dictionary<string, string>
+            {
+                { "oauth_verifier", verifier }
+            };
+            await GetAccessTokenAsync(accessTokenParams).ConfigureAwait(false);
+        }
+
         public async Task BeginAuthorizeAsync()
         {
             if (CredentialStore == null)

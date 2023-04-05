@@ -14,6 +14,14 @@
             "public_metrics,url,username,verified,withheld";
 
         /// <summary>
+        /// Some target expandable fields
+        /// </summary>
+        public const string TargetFields =
+            "created_at,description,id,location," +
+            "name,profile_image_url," +
+            "public_metrics,url,username,verified";
+
+        /// <summary>
         /// created_at
         /// </summary>
         public const string CreatedAt = "created_at";

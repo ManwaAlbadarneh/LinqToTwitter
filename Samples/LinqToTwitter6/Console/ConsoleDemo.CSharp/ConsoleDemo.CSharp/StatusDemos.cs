@@ -42,6 +42,10 @@ namespace ConsoleDemo.CSharp
                         Console.WriteLine("\n\tGetting retweeters...\n");
                         await RetweetersAsync(twitterCtx);
                         break;
+                    case '5':
+                        Console.WriteLine("\n\tSearching account...\n");
+                        await DoPagedSearchAsync(twitterCtx);
+                        break;
                     case 'q':
                     case 'Q':
                         Console.WriteLine("\nReturning...\n");
@@ -63,6 +67,7 @@ namespace ConsoleDemo.CSharp
             Console.WriteLine("\t 2. Retweet a Tweet");
             Console.WriteLine("\t 3. Get Oembed Tweet");
             Console.WriteLine("\t 4. Get Retweeters");
+            Console.WriteLine("\t 5. Search account");
 
             Console.WriteLine();
             Console.Write("\t Q. Return to Main menu");
@@ -79,6 +84,30 @@ namespace ConsoleDemo.CSharp
                             tweet.StatusID, tweet.User.ScreenNameResponse,
                             string.IsNullOrWhiteSpace(tweet.Text) ? tweet.FullText : tweet.Text);
                 });
+        }
+
+        static async Task DoPagedSearchAsync(TwitterContext twitterCtx)
+        {
+            //Get 1st 5 tweets only
+            const int MaxSearchEntriesToReturn = 5;
+
+            string screenName = "JoeMayo";
+
+            // oldest id you already have for this search term
+            ulong sinceID = 1;
+
+            List<Status> myRetweets =
+            await
+            (from search in twitterCtx.Status
+             where search.Type == StatusType.User &&
+                       search.ScreenName == screenName &&
+                       search.Count == MaxSearchEntriesToReturn &&
+                       search.SinceID == sinceID &&
+                       search.TweetMode == TweetMode.Extended
+             select search)
+            .ToListAsync();
+
+            PrintTweetsResults(myRetweets);
         }
 
         static async Task RetweetsOfMeStatusQueryAsync(TwitterContext twitterCtx)

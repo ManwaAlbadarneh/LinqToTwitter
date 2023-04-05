@@ -36,6 +36,6 @@ namespace LinqToTwitter.Common.Entities
         /// <summary>
         /// Available encodings/data streams
         /// </summary>
-        public List<Variant>? Variants { get; set; }
+        public List<Variant>? Variants { get; init; }
     }
 }

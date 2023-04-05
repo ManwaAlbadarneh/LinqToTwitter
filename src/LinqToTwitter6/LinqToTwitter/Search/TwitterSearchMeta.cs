@@ -24,5 +24,12 @@ namespace LinqToTwitter
         /// </summary>
         [JsonPropertyName("result_count")]
         public int Count { get; init; }
+
+        /// <summary>
+        /// Token for next page events
+        /// </summary>
+        [JsonPropertyName("next_token")]
+        public string? NextToken { get; set; }
+
     }
 }

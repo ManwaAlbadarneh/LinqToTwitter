@@ -18,6 +18,14 @@ namespace LinqToTwitter
         /// </summary>
         [JsonPropertyName("tag")]
         public string? Tag { get; init; }
+
+        public StreamingAddRule() { }
+
+        public StreamingAddRule(string tag, string value)
+        {
+            this.Tag = tag;
+            this.Value = value;
+        }
     }
 
 }

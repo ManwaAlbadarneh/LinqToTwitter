@@ -264,17 +264,26 @@ namespace ConsoleDemo.CSharp
         {
             string userID = "15411837";
 
-            TwitterUserQuery? userResponse =
-                await
-                (from user in twitterCtx.TwitterUser
-                 where user.Type == UserType.Following &&
-                       user.ID == userID
-                 select user)
-                .SingleOrDefaultAsync();
 
-            if (userResponse != null)
-                userResponse.Users?.ForEach(user =>
-                    Console.WriteLine("ID: " + user.ID));
+            string? pageToken = string.Empty;
+            do
+            {
+                var userResponse =
+                    await
+                    (from user in twitterCtx.TwitterUser
+                     where user.Type == UserType.Following &&
+                           user.ID == userID && user.MaxResults == 25 &&
+                           user.PaginationToken == pageToken
+                     select user)
+                    .SingleOrDefaultAsync();
+
+                if (userResponse != null)
+                    userResponse.Users?.ForEach(user =>
+                        Console.WriteLine("ID: " + user.ID));
+
+                pageToken = userResponse?.Meta?.NextToken;
+
+            } while (pageToken is not null);
         }
 
         static async Task FollowAsync(TwitterContext twitterCtx)
@@ -348,7 +357,7 @@ namespace ConsoleDemo.CSharp
             TwitterUserQuery? response =
                 await
                 (from usr in twitterCtx.TwitterUser
-                 where usr.Type == UserType.Me
+                 where usr.Type == UserType.Me 
                  select usr)
                 .SingleOrDefaultAsync();
 
